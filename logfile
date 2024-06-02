@@ -1,0 +1,17 @@
+sampled videos: 
+C:/Users/54115/Desktop/Doctorado/6.avi
+
+video duration: 
+16
+
+fps: 
+60.0
+
+number of frames 
+1000
+
+objects: 
+['a', 'b', 'c', 'd']
+
+Object frames: 
+{'dist1': [741, 746, 802, 811], 'dist2': [280, 348, 854, 887], 'cerca1': [25, 38, 534, 553, 582, 605], 'cerca2': [54, 155, 397, 500, 626, 630, 923, 942]}
