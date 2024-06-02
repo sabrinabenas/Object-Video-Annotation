@@ -32,18 +32,6 @@ def select_video():
     else:
         print("No se seleccionó ningún video")
 
-def askstring_2(title, prompt, geometry='', **kwargs):
-    def change_geometry():
-        if not geometry:
-            return
-        widget = kwargs['parent'].winfo_children()[-1]
-        if isinstance(widget, simpledialog.Dialog):
-            widget.geometry(geometry)
-
-    if 'parent' in kwargs:
-        kwargs['parent'].after(10, change_geometry)
-    return simpledialog.askstring(title, prompt, **kwargs)
-
 def on_mouse_click(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
         label_text = simpledialog.askstring("Nombre del objeto", "Name:  ")
