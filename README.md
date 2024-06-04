@@ -17,3 +17,4 @@ After pressing _finish_, you will see the video and pressing each key label will
   ```sh
   conda env create -f environment.yml
   ```
+- conda activate OVA
