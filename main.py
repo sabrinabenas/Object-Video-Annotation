@@ -94,7 +94,7 @@ def main():
     'objects: \n',str(labels_keys),'\n','\n',
     'Object frames: \n',str(dic)]
     project_folder = os.path.dirname(video_path) + '/'
-    f = open(os.path.join(project_folder,'logfile'), "w+")
+    f = open(os.path.join(project_folder,'logfile'), "w+") #falta agregar al lgfile el nombre del video
     f.writelines(L) 
     f.close()
 
