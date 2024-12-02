@@ -11,6 +11,8 @@ After that, you will see a frame just to remember the key label of each object i
 
 After pressing _finish_, you will see the video and pressing each key label will select the frames that the animal explores the object.
 
+Press esc to close.
+
 ## Installation
 - clone repo
 - create conda env

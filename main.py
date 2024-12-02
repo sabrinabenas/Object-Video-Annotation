@@ -83,7 +83,7 @@ def main():
     root.title("Video Annotation")
     create_gui(root)
     root.mainloop()
-
+    print(os.path.dirname(video_path))
     dic = video_scroll.video_scroll(video_path, labels, labels_keys)
 
     ##save info
@@ -94,7 +94,7 @@ def main():
     'objects: \n',str(labels_keys),'\n','\n',
     'Object frames: \n',str(dic)]
     project_folder = os.path.dirname(video_path) + '/'
-    f = open(os.path.join(project_folder,'logfile'), "w+") #falta agregar al lgfile el nombre del video
+    f = open(os.path.join(project_folder,'logfile_' + str(video_path.split('/')[-1].split('.')[0])), "w+") 
     f.writelines(L) 
     f.close()
 

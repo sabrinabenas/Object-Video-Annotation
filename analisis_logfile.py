@@ -7,7 +7,7 @@ def specific_differences(lst,fps):
     #falta chequear que sean pares las listas
     return np.sum([(lst[i+1] - lst[i])/fps for i in range(0, len(lst)-1, 2)])
 
-path = 'logfile'
+path = 'C:/Users/54115/Desktop/Doctorado/ARCHIVOS/4 obj BEH/Archivos/logfile_zoe_4obj_obj_s2'
 f = open('logfile','r')
 
 lines = [i for i in f.read().splitlines()]
@@ -20,7 +20,8 @@ differences_dict_seg = {key: specific_differences(value,fps) for key, value in d
 
 keys = list(differences_dict_seg.keys())
 values = list(differences_dict_seg.values())
-
+print(keys)
+print(values)
 plt.figure(figsize=(8, 4))
 plt.bar(keys, values)#, color=['blue', 'green', 'red', 'purple'])
 plt.title('Distribución de Distancias y Cercanías')
@@ -33,3 +34,4 @@ for i in keys:
     print(differences_dict_seg[i]/60 )
     print('para el objeto ', i)
     print('  ')
+

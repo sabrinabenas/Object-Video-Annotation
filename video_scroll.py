@@ -128,7 +128,8 @@ def video_scroll(vid, names, keys):
 					dic[list(dic)[i]].append(pos)
 			return dic
 			break
-
-	cap.release()
-	cv2.destroyAllWindows()
+	
+	if k == ord('q'):
+		cap.release()
+		cv2.destroyAllWindows()
 
