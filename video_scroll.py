@@ -5,7 +5,7 @@ import pandas as pd
 #from pynput import keyboard
 #from pynput.keyboard import Key
 
-def video_scroll(vid, names, keys):
+def video_scroll(vid, names, keys,frame_to_show):
 
 	dic = {}
 	for i in names:
@@ -19,22 +19,25 @@ def video_scroll(vid, names, keys):
 	top_label=top_label.replace("'","")
 
 	split = vid.split('.')
-	vid_name = os.path.basename(split[0])
+	#vid_name = os.path.basename(split[0])
 	cap = cv2.VideoCapture(vid)
-	fps =  cap.get(cv2.CAP_PROP_FPS)
-	length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))-1
+	#fps =  cap.get(cv2.CAP_PROP_FPS)
+	length = len(frame_to_show)
 
 	def onChange(trackbarValue):
+		trackbarValue = frame_to_show[trackbarValue]
 		cap.set(cv2.CAP_PROP_POS_FRAMES,trackbarValue)
 		err,img = cap.read()
 		h,w,d = img.shape
-		
+		text = 'FN = ' + str(trackbarValue)
 		if cnt == 1:  
-			n_img = cv2.putText(img, name, (10, 20), cv2.FONT_HERSHEY_SIMPLEX , 0.5,(255, 255, 255), 1, cv2.LINE_AA, False)
+			n_img = cv2.putText(img,  text + '  -  '+ name , (10, 20), cv2.FONT_HERSHEY_SIMPLEX , 0.5,(255, 255, 255), 1, cv2.LINE_AA, False)
 			cv2.imshow(top_label, n_img)
 
 		if cnt == 0:
-			cv2.imshow(top_label, img)
+			print(text)
+			n_img = cv2.putText(img,text , (10, 20), cv2.FONT_HERSHEY_SIMPLEX , 0.5,(255, 255, 255), 1, cv2.LINE_AA, False)
+			cv2.imshow(top_label, n_img)
 
 		if reset == 1:
 			n_img = cv2.putText(img, 'reset', (w-70, 20), cv2.FONT_HERSHEY_SIMPLEX , 0.3,  
@@ -74,19 +77,20 @@ def video_scroll(vid, names, keys):
 	show = 0
 	compare = []
 	cv2.namedWindow(top_label, cv2.WINDOW_NORMAL)
-	cv2.createTrackbar( 'pos', top_label, 0, length, onChange )
+	cv2.createTrackbar( 'pos', top_label, 0 , length, onChange )
 	onChange(0)
-
 	while cap.isOpened():
-
+		
 		k = cv2.waitKey(0) #& 0xff
-		print(k)
+		#print(k)
+		
+		#obj
 		for i in range(len(keys)):
 			if k == ord(keys[i]):
 				if compare == [] or keys[i] == compare[0]:
 					compare.append(keys[i])
 					pos = cv2.getTrackbarPos('pos',top_label)
-					dic[list(dic)[i]].append(pos)
+					dic[list(dic)[i]].append(frame_to_show[pos])
 					name = list(dic)[i]
 					l = len(list(dic.values())[i])
 
@@ -96,9 +100,10 @@ def video_scroll(vid, names, keys):
 					if l % 2 == 0:
 						cnt = 0
 						compare = []
-
+					
 					onChange(pos)
 
+		#reset
 		if k == 8: ##8 ubuntu
 			reset = 1
 			pos = cv2.getTrackbarPos('pos',top_label)
@@ -115,6 +120,7 @@ def video_scroll(vid, names, keys):
 
 			reset = 0
 
+		#show	
 		if k == ord('p'):
 			show = 1
 			pos = cv2.getTrackbarPos('pos',top_label)
@@ -125,7 +131,7 @@ def video_scroll(vid, names, keys):
 			for i in range(len(dic)):
 				if len(dic[names[i]]) % 2 != 0:
 					pos = cv2.getTrackbarPos('pos',top_label)
-					dic[list(dic)[i]].append(pos)
+					dic[list(dic)[i]].append(frame_to_show[pos])
 			return dic
 			break
 	

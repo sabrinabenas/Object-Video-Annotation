@@ -3,12 +3,14 @@ from tkinter import filedialog, simpledialog
 import cv2
 import os 
 import video_scroll
+import pandas as pd
+import numpy as np
 
 #global
 click_positions = [] 
 labels = [] 
 labels_keys = [] 
-
+frames_to_show = []
 
 def select_video():
     global cap, click_positions, labels, labels_keys , video_path,fps,frame_count , time
@@ -31,6 +33,29 @@ def select_video():
             print("No se pudo leer el video")
     else:
         print("No se seleccionó ningún video")
+
+def distance_to_bdp(x_beh,y_beh):
+    global click_positions
+    return [((x_beh - x)**2 + (y_beh - y)**2)**0.5 for x,y in click_positions]
+    
+def calcular_frames(posiciones,can_pixels,frames):
+    return [frames[i] for obj in posiciones for i in range(len(obj)) if obj[i] < can_pixels]
+
+def select_beh():
+    global frames_to_show
+    beh_path = filedialog.askopenfilename(
+        title="Selec Beh file (optional)",
+        filetypes=[("Archivos de ", "*.csv")] #para empezar
+    )
+    if beh_path:
+        df = pd.read_csv(beh_path, header=[1,2], index_col=0)   
+        bdp = df.columns[0][0] #queda para hacer un slider de todos los bdp posibles
+        can_pixels = 20
+        posiciones = distance_to_bdp(np.array(df[bdp]['x']),np.array(df[bdp]['y'])) #calcular la distancia entre cada objeto y el bdp
+        frames = np.array(df.index)
+        frames_to_show = calcular_frames(posiciones,can_pixels,frames)
+        print(frames_to_show) #quiza hay que hacer paquetitos de frames? 
+    return
 
 def on_mouse_click(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
@@ -70,6 +95,9 @@ def create_gui(root):
     btn_select_video = tk.Button(root, text="Seleccionar Video", command=select_video)
     btn_select_video.pack(pady=20)
 
+    btn_select_beh = tk.Button(root, text="Seleccionar beh", command=select_beh) #falta hacer algo secuencial
+    btn_select_beh.pack(pady=20)
+    
     btn_finish = tk.Button(root, text="Finish", command=lambda: finish_and_exit(root))
     btn_finish.pack(pady=20)
 
@@ -84,7 +112,7 @@ def main():
     create_gui(root)
     root.mainloop()
     print(os.path.dirname(video_path))
-    dic = video_scroll.video_scroll(video_path, labels, labels_keys)
+    dic = video_scroll.video_scroll(video_path, labels, labels_keys,frames_to_show)
 
     ##save info
     L = ['sampled video: \n',str(video_path),'\n','\n',
