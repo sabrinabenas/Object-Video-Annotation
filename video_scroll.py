@@ -22,7 +22,7 @@ def video_scroll(vid, names, keys,frame_to_show):
 	#vid_name = os.path.basename(split[0])
 	cap = cv2.VideoCapture(vid)
 	#fps =  cap.get(cv2.CAP_PROP_FPS)
-	length = len(frame_to_show)
+	length = len(frame_to_show) -1
 
 	def onChange(trackbarValue):
 		trackbarValue = frame_to_show[trackbarValue]
@@ -35,7 +35,6 @@ def video_scroll(vid, names, keys,frame_to_show):
 			cv2.imshow(top_label, n_img)
 
 		if cnt == 0:
-			print(text)
 			n_img = cv2.putText(img,text , (10, 20), cv2.FONT_HERSHEY_SIMPLEX , 0.5,(255, 255, 255), 1, cv2.LINE_AA, False)
 			cv2.imshow(top_label, n_img)
 

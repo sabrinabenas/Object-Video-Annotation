@@ -13,6 +13,8 @@ After pressing _finish_, you will see the video and pressing each key label will
 
 Press esc to close.
 
+add_dlc_beh branch: add DLC output and reduce frames 
+
 ## Installation
 - clone repo
 - create conda env

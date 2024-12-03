@@ -50,11 +50,12 @@ def select_beh():
     if beh_path:
         df = pd.read_csv(beh_path, header=[1,2], index_col=0)   
         bdp = df.columns[0][0] #queda para hacer un slider de todos los bdp posibles
-        can_pixels = 20
+        can_pixels = 53
         posiciones = distance_to_bdp(np.array(df[bdp]['x']),np.array(df[bdp]['y'])) #calcular la distancia entre cada objeto y el bdp
         frames = np.array(df.index)
         frames_to_show = calcular_frames(posiciones,can_pixels,frames)
-        print(frames_to_show) #quiza hay que hacer paquetitos de frames? 
+        #print(frames_to_show) #quiza hay que hacer paquetitos de frames? 
+    
     return
 
 def on_mouse_click(event, x, y, flags, param):
@@ -66,6 +67,7 @@ def on_mouse_click(event, x, y, flags, param):
             labels.append(label_text)
             labels_keys.append(label_key)
             draw_circles_and_labels()
+        print(click_positions)
 
 def draw_circles_and_labels():
     global cap, click_positions, labels, labels_keys, frame_with_annotations
